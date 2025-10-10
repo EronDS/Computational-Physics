@@ -29,6 +29,8 @@ class ProjectileMotion{
     float energy_final;
     float angle_of_collapse;
 
+    float energy_loss;
+
     ProjectileMotion(float s_ox, float s_oy, float v, 
         float v_angle, float a_ox = 0, float a_oy = -9.81,
         float mass = 1.0, int data_points_per_sec = 100){
@@ -67,6 +69,8 @@ class ProjectileMotion{
         this->energy_final = this->get_energy_at_collapse();
         this->angle_of_collapse = this->get_angle_of_collapse();
         this->h_max = this->calc_h_max();
+
+        this->energy_loss = 1 - (energy_final / energy_initial);
     }
 
     void save_to_json(const string& filename) {
@@ -84,8 +88,11 @@ class ProjectileMotion{
         file << "    \"apogee_time\": " << apogee_time << ",\n";
         file << "    \"h_max\": " << h_max << ",\n";
         file << "    \"mass\": " << mass << ",\n";
+        file << "    \"initial_acceleration_x\": " << acceleration["x"][0] << ",\n";
+        file << "    \"initial_acceleration_y\": " << acceleration["y"][0] << ",\n";
         file << "    \"energy_initial\": " << energy_initial << ",\n";
         file << "    \"energy_final\": " << energy_final << ",\n";
+        file << "    \"energy_loss\": " << energy_loss << ",\n";
         file << "    \"angle_of_collapse\": " << angle_of_collapse << "\n";
         file << "  },\n";
         
@@ -122,6 +129,20 @@ class ProjectileMotion{
         for (size_t i = 0; i < velocity["y"].size(); ++i) {
             file << velocity["y"][i];
             if (i < velocity["y"].size() - 1) file << ", ";
+        }
+        file << "],\n";
+        
+        file << "    \"acceleration_x\": [";
+        for (size_t i = 0; i < acceleration["x"].size(); ++i) {
+            file << acceleration["x"][i];
+            if (i < acceleration["x"].size() - 1) file << ", ";
+        }
+        file << "],\n";
+        
+        file << "    \"acceleration_y\": [";
+        for (size_t i = 0; i < acceleration["y"].size(); ++i) {
+            file << acceleration["y"][i];
+            if (i < acceleration["y"].size() - 1) file << ", ";
         }
         file << "]\n";
         
@@ -195,6 +216,9 @@ class ProjectileMotion{
             position["y"].push_back(get_position(current_time, "y"));
             velocity["x"].push_back(get_velocity(current_time, "x"));
             velocity["y"].push_back(get_velocity(current_time, "y"));
+            // Acceleration remains constant for projectile motion
+            acceleration["x"].push_back(acceleration["x"][0]);
+            acceleration["y"].push_back(acceleration["y"][0]);
         }
     }
 
@@ -206,11 +230,11 @@ int main() {
     
     float initial_x = 0.0;      // Starting x position (m)
     float initial_y = 0.0;      // Starting y position (m)
-    float velocity = 50.0;      // Initial velocity magnitude (m/s)
-    float angle = M_PI / 4;     // Launch angle in radians (45 degrees)
-    float accel_x = 0.0;        // Horizontal acceleration (m/s²)
+    float velocity = 65.0;      // Initial velocity magnitude (m/s)
+    float angle = M_PI / 4;     // Launch angle in radians
+    float accel_x = -1.0;        // Horizontal acceleration (m/s²)
     float accel_y = -9.81;      // Vertical acceleration - gravity (m/s²)
-    float mass = 1.0;           // Mass of projectile (kg)
+    float mass = 5.0;           // Mass of projectile (kg)
     int data_points = 100;      // Data points per second
     
     // Create projectile motion object
@@ -218,7 +242,7 @@ int main() {
                               accel_x, accel_y, mass, data_points);
     
     // Save data to JSON file
-    projectile.save_to_json("projectile_motion_data.json");
+    projectile.save_to_json("projectile_motion_data_non_symmetric.json");
     
     // Print some key results
     cout << "\n=== Projectile Motion Results ===" << endl;
@@ -228,6 +252,7 @@ int main() {
     cout << "Initial energy: " << projectile.energy_initial << " J" << endl;
     cout << "Final energy: " << projectile.energy_final << " J" << endl;
     cout << "Angle of collapse: " << projectile.angle_of_collapse << " degrees" << endl;
+    cout << "Energy Loss: " << projectile.energy_loss * 100 << " %" << endl;
     
     return 0;
 }

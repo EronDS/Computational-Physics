@@ -8,7 +8,7 @@ import os
 
 
 class ProjectileMotionVisualizer:
-    def __init__(self, json_file="projectile_motion_data.json"):
+    def __init__(self, json_file="projectile_motion_data.json", output_folder="plot_and_visualizers"):
         with open(json_file, 'r') as f:
             self.json_data = json.load(f)
         
@@ -19,11 +19,20 @@ class ProjectileMotionVisualizer:
         self.x_vel = np.array(self.json_data["time_series"]["velocity_x"])
         self.y_vel = np.array(self.json_data["time_series"]["velocity_y"])
         
+        # Extract acceleration data if available
+        if "acceleration_x" in self.json_data["time_series"]:
+            self.x_accel = np.array(self.json_data["time_series"]["acceleration_x"])
+            self.y_accel = np.array(self.json_data["time_series"]["acceleration_y"])
+        else:
+            # Calculate accelerations from velocity if not available
+            self.x_accel = np.gradient(self.x_vel, self.time)
+            self.y_accel = np.gradient(self.y_vel, self.time)
+        
         # Metadata
         self.metadata = self.json_data["metadata"]
         
         # Create output directory
-        self.output_dir = "./plot_and_visualizers"
+        self.output_dir = f"./{output_folder}"
         os.makedirs(self.output_dir, exist_ok=True)
     
     def plot_trajectory(self, save_image=True):
@@ -45,10 +54,24 @@ class ProjectileMotionVisualizer:
         plt.legend()
         plt.axis('equal')
         
-        # Add metadata text
+        # Add metadata text with all new information
         info_text = f"Max Height: {self.metadata['h_max']:.2f} m\n"
         info_text += f"Total Time: {self.metadata['total_time']:.2f} s\n"
-        info_text += f"Apogee Time: {self.metadata['apogee_time']:.2f} s"
+        info_text += f"Apogee Time: {self.metadata['apogee_time']:.2f} s\n"
+        
+        # Add initial acceleration info if available
+        if 'initial_acceleration_x' in self.metadata:
+            info_text += f"Initial Accel X: {self.metadata['initial_acceleration_x']:.2f} m/s²\n"
+            info_text += f"Initial Accel Y: {self.metadata['initial_acceleration_y']:.2f} m/s²\n"
+        else:
+            info_text += f"Initial Accel X: {self.x_accel[0]:.2f} m/s²\n"
+            info_text += f"Initial Accel Y: {self.y_accel[0]:.2f} m/s²\n"
+        
+        # Add energy information if available
+        if 'energy_loss' in self.metadata:
+            energy_loss_percent = self.metadata['energy_loss'] * 100
+            info_text += f"Energy Loss: {energy_loss_percent:.2f}%"
+        
         plt.text(0.02, 0.98, info_text, transform=plt.gca().transAxes, 
                 verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
         
@@ -98,15 +121,31 @@ class ProjectileMotionVisualizer:
                            bbox=dict(boxstyle='round,pad=0.5', facecolor='lightblue', alpha=0.9),
                            verticalalignment='top')
         
-        # Metadata in a separate corner
-        metadata_text = ax.text(0.98, 0.97, 
-                               f"Max Height: {self.metadata['h_max']:.2f} m\n"
-                               f"Total Time: {self.metadata['total_time']:.2f} s\n"
-                               f"Range: {self.x_pos[-1]:.2f} m\n"
-                               f"Initial Energy: {self.metadata['energy_initial']:.2f} J\n"
-                               f"Final Energy: {self.metadata['energy_final']:.2f} J\n"
-                               f"Angle of Collapse: {self.metadata['angle_of_collapse']:.2f}°",
-                               transform=ax.transAxes, fontsize=10,
+        # Metadata in a separate corner - including all new information
+        metadata_info = f"Max Height: {self.metadata['h_max']:.2f} m\n"
+        metadata_info += f"Total Time: {self.metadata['total_time']:.2f} s\n"
+        metadata_info += f"Range: {self.x_pos[-1]:.2f} m\n"
+        
+        # Add initial acceleration info
+        if 'initial_acceleration_x' in self.metadata:
+            metadata_info += f"Initial Accel X: {self.metadata['initial_acceleration_x']:.2f} m/s²\n"
+            metadata_info += f"Initial Accel Y: {self.metadata['initial_acceleration_y']:.2f} m/s²\n"
+        else:
+            metadata_info += f"Initial Accel X: {self.x_accel[0]:.2f} m/s²\n"
+            metadata_info += f"Initial Accel Y: {self.y_accel[0]:.2f} m/s²\n"
+        
+        metadata_info += f"Initial Energy: {self.metadata['energy_initial']:.2f} J\n"
+        metadata_info += f"Final Energy: {self.metadata['energy_final']:.2f} J\n"
+        
+        # Add energy loss if available
+        if 'energy_loss' in self.metadata:
+            energy_loss_percent = self.metadata['energy_loss'] * 100
+            metadata_info += f"Energy Loss: {energy_loss_percent:.2f}%\n"
+        
+        metadata_info += f"Angle of Collapse: {self.metadata['angle_of_collapse']:.2f}°"
+        
+        metadata_text = ax.text(0.98, 0.97, metadata_info,
+                               transform=ax.transAxes, fontsize=9,
                                verticalalignment='top', horizontalalignment='right',
                                bbox=dict(boxstyle='round,pad=0.5', facecolor='wheat', alpha=0.9))
         
@@ -212,13 +251,17 @@ class ProjectileMotionVisualizer:
 
 # Example usage
 if __name__ == "__main__":
-    # Create visualizer
-    viz = ProjectileMotionVisualizer()
+    # Create visualizer with custom output folder
+    symmetric_json = "projectile_motion_data_symmetric.json"
+    non_symmetric_json = "projectile_motion_data_non_symmetric.json"
+
+    output_folder_name_symmetric = "plot_and_visualizers_symmetric"
+    output_folder_name_non_symmeitrc = "plot_and_visualizers_non_symmetric"
+    viz = ProjectileMotionVisualizer(json_file= non_symmetric_json,output_folder=output_folder_name_non_symmeitrc)
     
     print(f"Output directory: {viz.output_dir}")
-    
     # Show different visualizations and save them
-    print("1. Plotting complete trajectory...")
+    print("\n1. Plotting complete trajectory...")
     viz.plot_trajectory(save_image=True)
     
     print("2. Creating animated visualization...")
