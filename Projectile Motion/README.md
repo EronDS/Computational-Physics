@@ -77,6 +77,19 @@ Where:
 - $V_y$ = vertical velocity component at impact (negative when falling)
 - $\theta$ = angle below the horizontal (typically negative)
 
+### Conservative vs Non-Conservative Systems
+
+The angle of collision behavior differs significantly between conservative and non-conservative systems:
+
+**In Conservative Systems** (only gravitational force acting):
+- The absolute value of the angle of collision equals the initial launch angle: $|\theta_{collision}| = |\theta_{initial}|$
+- The collision angle has the opposite sign: $\theta_{collision} = -\theta_{initial}$
+- This symmetry occurs because horizontal velocity remains constant and vertical velocity magnitude at impact equals the initial vertical velocity magnitude
+
+**In Non-Conservative Systems** (drag forces, horizontal acceleration, etc.):
+- The absolute value of the angle of collision is **different** from the initial launch angle: $|\theta_{collision}| \neq |\theta_{initial}|$
+- This asymmetry results from energy loss due to non-conservative forces
+
 ## Mathematical Hand Calculations and Derivations
 
 The following image shows the detailed mathematical derivations and calculations performed by hand:

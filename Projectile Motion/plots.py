@@ -252,8 +252,8 @@ class ProjectileMotionVisualizer:
 # Example usage
 if __name__ == "__main__":
     # Create visualizer with custom output folder
-    symmetric_json = "projectile_motion_data_symmetric.json"
-    non_symmetric_json = "projectile_motion_data_non_symmetric.json"
+    symmetric_json = "json_data/projectile_motion_data_symmetric.json"
+    non_symmetric_json = "json_data/projectile_motion_data_non_symmetric.json"
 
     output_folder_name_symmetric = "plot_and_visualizers_symmetric"
     output_folder_name_non_symmeitrc = "plot_and_visualizers_non_symmetric"

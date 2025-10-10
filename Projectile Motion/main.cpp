@@ -232,7 +232,7 @@ int main() {
     float initial_y = 0.0;      // Starting y position (m)
     float velocity = 65.0;      // Initial velocity magnitude (m/s)
     float angle = M_PI / 4;     // Launch angle in radians
-    float accel_x = -1.0;        // Horizontal acceleration (m/s²)
+    float accel_x = -3.0;        // Horizontal acceleration (m/s²)
     float accel_y = -9.81;      // Vertical acceleration - gravity (m/s²)
     float mass = 5.0;           // Mass of projectile (kg)
     int data_points = 100;      // Data points per second
@@ -242,7 +242,7 @@ int main() {
                               accel_x, accel_y, mass, data_points);
     
     // Save data to JSON file
-    projectile.save_to_json("projectile_motion_data_non_symmetric.json");
+    projectile.save_to_json("json_data/projectile_motion_data_non_symmetric.json");
     
     // Print some key results
     cout << "\n=== Projectile Motion Results ===" << endl;
