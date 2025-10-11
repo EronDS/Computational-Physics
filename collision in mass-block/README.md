@@ -81,3 +81,5 @@ From these parameters, the system calculates:
 # Manual Calculations
 
 The theoretical calculations can be found in the math & calculations folder.
+
+![by Hand Calculations](math%20&%20calculations/calculations.png)
