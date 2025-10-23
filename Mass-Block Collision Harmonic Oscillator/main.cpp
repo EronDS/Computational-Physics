@@ -12,7 +12,8 @@
 #endif
 
 using namespace std;
-
+//Todo: Damped Harmonic Motion Simmulation.
+//Ae^{-bt/2m}
 
 class ProjectileSpringBlock{
     public:
