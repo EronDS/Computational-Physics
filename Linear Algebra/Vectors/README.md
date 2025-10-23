@@ -16,7 +16,16 @@ $$|a| = \sqrt{\sum_i^n a_i^2}$$
 
 $$\theta = \arccos\left(\frac{\vec{a}\cdot \vec{b}}{|\vec{a}||\vec{b}|}\right)$$
 
+## Cross-Product
 
-### Visualization
+$$\sum_j\sum_k\epsilon_{ijk}\vec{a}_j \vec{b}_k$$
+
+where,
+ijk in cyclic: + 1
+ijk in anti-cycle: -1
+ijk not in cycle: 0
+
+## Visualization
 
 ![Vector Visualization](images/vector_visualization.png)
+

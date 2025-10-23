@@ -1,8 +1,13 @@
 {
   "Angle (radians)": [0.588955],
+  "Cross Product": [-6.000000, 12.000000, -6.000000],
+  "Cross Product Magnitude": [14.696939],
+  "Cross Product Unit": [-0.408248, 0.816497, -0.408248],
   "Dot Product": [22.000000],
   "Vector A": [1.000000, 2.000000, 3.000000],
   "Vector A Length": [3.741657],
+  "Vector A Unit": [0.267261, 0.534522, 0.801784],
   "Vector B": [5.000000, 4.000000, 3.000000],
-  "Vector B Length": [7.071068]
+  "Vector B Length": [7.071068],
+  "Vector B Unit": [0.707107, 0.565685, 0.424264]
 }

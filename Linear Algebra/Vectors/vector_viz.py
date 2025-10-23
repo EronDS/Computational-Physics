@@ -11,13 +11,15 @@ class VectorVisualizer:
     def plot_vectors(self):
         vec_a = np.array(self.data["Vector A"])
         vec_b = np.array(self.data["Vector B"])
+        vec_cross = np.array(self.data["Cross Product"])
         
-        # Extract metadata
+        # Extract all metadata from JSON (no calculations)
         length_a = self.data["Vector A Length"][0]
         length_b = self.data["Vector B Length"][0]
+        cross_magnitude = self.data["Cross Product Magnitude"][0]
         dot_product = self.data["Dot Product"][0]
         angle_rad = self.data["Angle (radians)"][0]
-        angle_deg = np.degrees(angle_rad)
+        angle_deg = angle_rad * 180.0 / np.pi  # Convert to degrees
         
         origin = np.array([0, 0, 0])
         
@@ -34,10 +36,14 @@ class VectorVisualizer:
                  color='green', label=f'Vector B: ({vec_b[0]}, {vec_b[1]}, {vec_b[2]})', 
                  arrow_length_ratio=0.1, linewidth=3)
         
-        # Create angle arc/shading
-        # Normalize vectors for angle calculation
-        vec_a_norm = vec_a / np.linalg.norm(vec_a)
-        vec_b_norm = vec_b / np.linalg.norm(vec_b)
+        # Plot cross product vector
+        ax.quiver(*origin, vec_cross[0], vec_cross[1], vec_cross[2], 
+                 color='purple', label=f'A × B: ({vec_cross[0]:.1f}, {vec_cross[1]:.1f}, {vec_cross[2]:.1f})', 
+                 arrow_length_ratio=0.1, linewidth=3)
+        
+        # Create angle arc/shading using unit vectors from JSON
+        vec_a_unit = np.array(self.data["Vector A Unit"])
+        vec_b_unit = np.array(self.data["Vector B Unit"])
         
         # Create points for the angle arc
         n_points = 20
@@ -46,8 +52,8 @@ class VectorVisualizer:
         # Create arc points using spherical linear interpolation (slerp)
         arc_points = []
         for ti in t:
-            # Simple linear interpolation between normalized vectors
-            interp_vec = (1-ti) * vec_a_norm + ti * vec_b_norm
+            # Simple linear interpolation between unit vectors from JSON
+            interp_vec = (1-ti) * vec_a_unit + ti * vec_b_unit
             interp_vec = interp_vec / np.linalg.norm(interp_vec)  # Re-normalize
             arc_points.append(interp_vec * min(length_a, length_b) * 0.6)  # Scale based on smaller vector, more visible
         
@@ -64,8 +70,8 @@ class VectorVisualizer:
             ax.plot_trisurf(triangle[:, 0], triangle[:, 1], triangle[:, 2], 
                            color='red', alpha=0.4)
         
-        # Set axis limits based on vector magnitudes
-        max_range = max(length_a, length_b) * 1.2
+        # Set axis limits based on all vector magnitudes
+        max_range = max(length_a, length_b, cross_magnitude) * 1.2
         ax.set_xlim([-max_range/2, max_range])
         ax.set_ylim([-max_range/2, max_range])
         ax.set_zlim([-max_range/2, max_range])
@@ -81,15 +87,17 @@ class VectorVisualizer:
         title = '3D Vector Analysis and Visualization'
         ax.set_title(title, fontsize=14, fontweight='bold', pad=20)
         
-        # Add metadata text box
+        # Add metadata text box with cross product info
         metadata_text = (
             f'Vector A: ({vec_a[0]:.3f}, {vec_a[1]:.3f}, {vec_a[2]:.3f})\n'
             f'Vector B: ({vec_b[0]:.3f}, {vec_b[1]:.3f}, {vec_b[2]:.3f})\n'
+            f'A × B: ({vec_cross[0]:.3f}, {vec_cross[1]:.3f}, {vec_cross[2]:.3f})\n'
             f'|A| = {length_a:.3f}\n'
             f'|B| = {length_b:.3f}\n'
+            f'|A × B| = {cross_magnitude:.3f}\n'
             f'A · B = {dot_product:.3f}\n'
             f'Angle = {angle_deg:.1f}° ({angle_rad:.3f} rad)\n'
-            f'cos(θ) = {np.cos(angle_rad):.3f}'
+            f'Area = {cross_magnitude:.3f}'
         )
         
         # Position text box
