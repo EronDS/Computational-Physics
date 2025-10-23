@@ -27,7 +27,6 @@ class Vector{
         }
         return sqrt(sum);
     }
-    
 };
 
 
