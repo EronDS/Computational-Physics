@@ -15,3 +15,8 @@ $$|a| = \sqrt{\sum_i^n a_i^2}$$
 ### Angle Between Vectors
 
 $$\theta = \arccos\left(\frac{\vec{a}\cdot \vec{b}}{|\vec{a}||\vec{b}|}\right)$$
+
+
+### Visualization
+
+![Vector Visualization](images/vector_visualization.png)
