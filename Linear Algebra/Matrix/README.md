@@ -7,7 +7,7 @@ This section demonstrates various linear transformations and their geometric eff
 ### 🔄 **Rotation** | $\det(A) = 1$
 Preserves distances and angles while rotating vectors around the origin.
 
-![Rotation Transformation](Matrix/figures/rotation.png)
+![Rotation Transformation](figures/rotation.png)
 
 ---
 
@@ -15,28 +15,28 @@ Preserves distances and angles while rotating vectors around the origin.
 - **Expansion**: $|\det(A)| > 1$ (stretches space)
 - **Contraction**: $|\det(A)| < 1$ (compresses space)
 
-![Scaling Transformation](Matrix/figures/scaling.png)
+![Scaling Transformation](figures/scaling.png)
 
 ---
 
 ### 🪞 **Reflection** | $\det(A) = -1$
 Flips orientation (mirror transformation) while preserving distances.
 
-![Reflection Transformation](Matrix/figures/reflection.png)
+![Reflection Transformation](figures/reflection.png)
 
 ---
 
 ### 🔀 **Shearing** | $\det(A) = 1$
 Distorts shape while preserving area/volume.
 
-![Shearing Transformation](Matrix/figures/shearing.png)
+![Shearing Transformation](figures/shearing.png)
 
 ---
 
 ### 🔴 **Collapse/Degenerate** | $\det(A) = 0$
 Projects space onto a lower dimension (non-invertible).
 
-![Collapse Transformation](Matrix/figures/collapse.png)
+![Collapse Transformation](figures/collapse.png)
 
 
 
