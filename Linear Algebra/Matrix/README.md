@@ -1,3 +1,45 @@
+# Matrix Transformation Visualizations
+
+This section demonstrates various linear transformations and their geometric effects through visual examples.
+
+## Transformation Types
+
+### 🔄 **Rotation** | $\det(A) = 1$
+Preserves distances and angles while rotating vectors around the origin.
+
+![Rotation Transformation](Matrix/figures/rotation.png)
+
+---
+
+### 📏 **Scaling** | $|\det(A)| \neq 1$
+- **Expansion**: $|\det(A)| > 1$ (stretches space)
+- **Contraction**: $|\det(A)| < 1$ (compresses space)
+
+![Scaling Transformation](Matrix/figures/scaling.png)
+
+---
+
+### 🪞 **Reflection** | $\det(A) = -1$
+Flips orientation (mirror transformation) while preserving distances.
+
+![Reflection Transformation](Matrix/figures/reflection.png)
+
+---
+
+### 🔀 **Shearing** | $\det(A) = 1$
+Distorts shape while preserving area/volume.
+
+![Shearing Transformation](Matrix/figures/shearing.png)
+
+---
+
+### 🔴 **Collapse/Degenerate** | $\det(A) = 0$
+Projects space onto a lower dimension (non-invertible).
+
+![Collapse Transformation](Matrix/figures/collapse.png)
+
+
+
 # Matrix Transformations & Determinants
 
 > **Definition** (Determinant): The determinant of a square matrix $(n \times n)$ $A$ is:
