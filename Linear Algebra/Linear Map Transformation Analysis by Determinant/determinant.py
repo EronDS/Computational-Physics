@@ -6,7 +6,7 @@ sns.set_theme(style="darkgrid")
 
 
 class Matrix:
-    def __init__(self, type:str, vector_space_type:str, n:int = 100,save_path:str = "./Matrix/figures/default.png", **matrix_kwargs) -> None:
+    def __init__(self, type:str, vector_space_type:str, n:int = 100,save_path:str = "./Determinant/figures/default.png", **matrix_kwargs) -> None:
         """
         Initializes the Matrix class with a given 2D numpy array.
 
@@ -274,13 +274,13 @@ class Matrix:
 
 if __name__ == "__main__":
     import os 
-    os.makedirs("./Matrix/figures", exist_ok=True)
+    os.makedirs("./Determinant/figures", exist_ok=True)
 
     matrix_operation_types:list[str] = ['rotation','scaling','shearing','reflection', 'collapse']
 
     for matrix_type in matrix_operation_types:
         matrix = Matrix(type=matrix_type, vector_space_type="rectangular", n=1800,
-                        save_path = f"./Matrix/figures/{matrix_type}.png")
+                        save_path = f"./Determinant/figures/{matrix_type}.png")
         print(f"{matrix_type.capitalize()} Transformation:")
         print(matrix.vector_space_elements.shape)
         print(matrix.vector_space_elements_prime.shape)

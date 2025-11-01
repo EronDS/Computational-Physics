@@ -1,4 +1,4 @@
-# Matrix Transformation Visualizations
+# Matrix Transformation Visualizations (by Determinant Analysis)
 
 This section demonstrates various linear transformations and their geometric effects through visual examples.
 
