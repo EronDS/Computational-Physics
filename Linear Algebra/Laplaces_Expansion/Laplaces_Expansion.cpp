@@ -1,6 +1,7 @@
 #include <vector>
 #include <map>
 #include <cmath>
+#include <stdexcept>
 
 using namespace std;
 
@@ -61,7 +62,8 @@ class LaplacesExpansion {
             return matrix[0][0];
         }
         else{LaplacesExpansion le(matrix);
-            return le.sum_expansion();
+            //return le.sum_expansion();
+            return le.getDeterminant();
         }
     }
 
