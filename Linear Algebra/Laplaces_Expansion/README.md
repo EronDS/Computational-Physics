@@ -1,16 +1,18 @@
 # Laplace's Expansion
-Laplace's Expansion offers a computationally way for computing higher dimension determinants throught recursion.
+Laplace's Expansion offers a computational way for computing higher dimension determinants through recursion.
 
-> [!Description]
-> Theorem([[Laplace's Expansion Formula]]): Given an $nxn$ matrix A,
-> $$det(A)= \sum_{j = 1}^nA_{ji}\Delta_{ji} = \sum_{j=1}^n M_{ji}A_{ji}$$
+> [!NOTE]
+> **Theorem (Laplace's Expansion Formula)**: Given an $n \times n$ matrix A,
+> $$\det(A) = \sum_{j=1}^n A_{ij}\Delta_{ij} = \sum_{j=1}^n (-1)^{i+j}A_{ij}M_{ij}$$
 > 
-> For a $nxn$ matrix $A$, define $A^{ij}$ to be the $(n-1)\times(n-1)$ matrix having the i row and j column of A removed.
-> Minor: $M_{ij} = det(A^{ij})$
-> Cofactor: $\Delta_{ij} = (-1)^{i+j}det(M_{ij})$
+> For an $n \times n$ matrix $A$, define $A^{ij}$ to be the $(n-1) \times (n-1)$ matrix having the $i$-th row and $j$-th column of $A$ removed.
+> 
+> **Minor**: $M_{ij} = \det(A^{ij})$  
+> **Cofactor**: $\Delta_{ij} = (-1)^{i+j}\det(A^{ij}) = (-1)^{i+j}M_{ij}$
 
+## Implementation
 
-
+```cpp
 float determinant_of_matrix(const vector<vector<float>>& matrix) {
         // determinant for sub-matrix 2x2 main diagonal method
         if (matrix.size() == 3 && matrix[0].size() == 3){
@@ -28,10 +30,14 @@ float determinant_of_matrix(const vector<vector<float>>& matrix) {
         }
         else{LaplacesExpansion le(matrix);
             //return le.sum_expansion();
-            return le.getDeterminant(); <- recursive calculation for each matrix untill reaching 3/2/1 ndim (known ways for calculating);
+            return le.getDeterminant(); // Recursive calculation for each matrix until reaching 3/2/1 dimensions
         }
     }
+```
 
+The recursive implementation handles matrices of any size by:
+1. **Base cases**: Direct formulas for 1×1, 2×2, and 3×3 matrices
+2. **Recursive case**: For larger matrices, creates minors and recursively computes their determinants
 ## Big O Analysis
 
 ### Time Complexity
@@ -90,7 +96,13 @@ T(n) = O(n!)
 3. **Alternative Algorithms**: 
    - LU Decomposition: O(n³)
    - Gaussian Elimination: O(n³)
+4. **Numerical Stability**: Use double precision for larger matrices
 
+### Practical Limitations
 
-> [!note] 
-> LU decomposition & Gaussian Elimination (to be implemented) will be used for larger matrices.
+- **n ≤ 8**: Manageable computation time
+- **n = 10**: ~3.6 million operations (slow but feasible)
+- **n ≥ 12**: Impractical for real-time computation
+
+> [!NOTE] 
+> LU decomposition & Gaussian Elimination (to be implemented) will be used for larger matrices due to their superior O(n³) complexity.
